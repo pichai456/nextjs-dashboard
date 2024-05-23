@@ -39,7 +39,7 @@ function CreatePage() {
   };
 
   const apiCreatePost = async () => {
-    const res = await fetch("http://localhost:3000/api/posts", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

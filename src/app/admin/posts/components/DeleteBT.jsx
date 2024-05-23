@@ -6,7 +6,7 @@ function DeleteBT({ id }) {
     const confirmed = confirm("Are you sure you want to delete");
     if (confirmed) {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/users-all/?id=${id}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/posts-all/?id=${id}`,
         {
           method: "DELETE",
         }

@@ -7,22 +7,23 @@ import SideNav from "../../../components/SideNav";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-function AdminEditUserPage({ params }) {
+function AdminEditPostPage({ params }) {
   const { data: session } = useSession();
   if (!session) redirect("/login");
   if (!session?.user?.role === "admin") redirect("/welcome");
+
   const { id } = params;
   const router = useRouter();
 
-  const [userOld, setUserOld] = useState();
-  const [newUserName, setUserNew] = useState("");
-  const [newUserEmail, setUserEmail] = useState("");
-  const [newUserPassword, setUserPassword] = useState("");
+  const [postOld, setPostOld] = useState([]);
+  const [newTitle, setNewTitle] = useState("");
+  const [newImg, setNewImg] = useState("");
+  const [newContent, setNewContent] = useState("");
 
-  const getUser = async (id) => {
+  const getPostById = async (id) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/users-all/${id}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/posts-all/${id}`,
         {
           method: "GET",
           headers: {
@@ -32,34 +33,34 @@ function AdminEditUserPage({ params }) {
         }
       );
       if (!res.ok) {
-        throw new Error("Failed to get users");
+        throw new Error("Failed to get post");
       }
-      const resData = await res.json();
-      setUserOld(resData.user);
+      const data = await res.json();
+      setPostOld(data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const putUser = async (id) => {
+  const putPostById = async (id) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/users-all/${id}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/posts-all/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          cache: "no-cache",
           body: JSON.stringify({
-            name: newUserName,
-            email: newUserEmail,
-            password: newUserPassword,
+            title: newTitle,
+            img: newImg,
+            content: newContent,
           }),
+          cache: "no-cache",
         }
       );
       if (!res.ok) {
-        throw new Error("Failed to update users");
+        throw new Error("Failed to update post");
       }
       return true;
     } catch (error) {
@@ -70,52 +71,56 @@ function AdminEditUserPage({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await putUser(id);
-    if (data) {
+    const success = await putPostById(id);
+    console.log(success);
+    if (success) {
       router.refresh();
-      router.push("/admin/users");
+      router.push("/admin/posts");
     }
   };
 
   useEffect(() => {
-    getUser(id);
+    getPostById(id);
   }, []);
 
   return (
     <Container>
-      <AdminNav />
+      <AdminNav session={session} />
       <div className="flex-grow">
         <div className="container shadow-md rounded-md mx-auto my-10 p-10">
           <Link
-            href="/admin/users"
+            href="/admin/posts"
             className="bg-gray-500 text-white rounded-md px-4 py-2 inline-block"
           >
             Go Back
           </Link>
           <hr className="my-3" />
-          <h3 className="text-xl">Admin Edit User</h3>
+          <h3 className="text-xl">Admin Edit Post</h3>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
               className="bg-gray-200 rounded-md w-[300px] block border py-2 px-4 text-xl my-3"
-              placeholder={userOld?.name}
-              value={newUserName}
-              onChange={(e) => setUserNew(e.target.value)}
+              placeholder={postOld?.title}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
             />
             <input
-              type="email"
+              type="text"
               className="bg-gray-200 rounded-md w-[300px] block border py-2 px-4 text-xl my-3"
-              placeholder={userOld?.email}
-              value={newUserEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder={postOld?.img}
+              value={newImg}
+              onChange={(e) => setNewImg(e.target.value)}
             />
-            <input
-              type="password"
+            <textarea
+              name=""
+              id=""
               className="bg-gray-200 rounded-md w-[300px] block border py-2 px-4 text-xl my-3"
-              placeholder={userOld?.password}
-              value={newUserPassword}
-              onChange={(e) => setUserPassword(e.target.value)}
-            />
+              color="30"
+              rows="10"
+              placeholder={postOld?.content}
+              value={newContent}
+              onChange={(e) => setNewContent(e.target.value)}
+            ></textarea>
 
             <button
               className="bg-green-500 rounded-md px-4 py-2 inline-block text-white text-xl"
@@ -132,4 +137,4 @@ function AdminEditUserPage({ params }) {
   );
 }
 
-export default AdminEditUserPage;
+export default AdminEditPostPage;

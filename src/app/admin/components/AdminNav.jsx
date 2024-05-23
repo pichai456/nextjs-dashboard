@@ -11,7 +11,7 @@ function AdminNav({ session }) {
         <div className="flex justify-between items-center p-7">
           <div>
             <Link href="/">
-              <h2 className="text-3xl">Pichai DashBoard</h2>
+              <h2 className="text-3xl">Admin DashBoard</h2>
               {/* <Image src={Logo} width={100} height={100} alt="logo" /> */}
             </Link>
           </div>

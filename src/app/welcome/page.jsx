@@ -23,7 +23,7 @@ function WelcomePage() {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/posts?email=${userEmail}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/posts?email=${userEmail}`,
         {
           method: "GET",
           headers: {

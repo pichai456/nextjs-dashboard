@@ -1,14 +1,48 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Container from "../components/Container";
 import AdminNav from "../components/AdminNav";
 import Footer from "../components/Footer";
 import SideNav from "../components/SideNav";
 import Link from "next/link";
 import Image from "next/image";
-function PostsPage() {
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import DeleteBT from "./components/DeleteBT";
+function AdminPostsPage() {
+  const { data: session } = useSession();
+  if (!session) redirect("/login");
+  if (session?.user?.role !== "admin") redirect("/welcome");
+
+  const [postsData, setPostsData] = useState([]);
+  console.log(postsData);
+  const getPostsData = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/posts-all`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to get posts");
+      }
+
+      const data = await res.json();
+      setPostsData(data.posts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPostsData();
+  }, []);
   return (
     <Container>
-      <AdminNav />
+      <AdminNav session={session} />
       <div className="flex-grow">
         <div className="container mx-auto">
           <div className="flex  mt-10">
@@ -28,34 +62,31 @@ function PostsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="p-5">1</td>
-                      <td className="p-5">Title Post</td>
-                      <td className="p-5">
-                        <Image
-                          className="rounded-md my-3"
-                          src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y29kaW5nfGVufDB8fDB8fHww"
-                          width={100}
-                          height={100}
-                          alt="image post"
-                        />
-                      </td>
-                      <td className="p-5">test content</td>
-                      <td className="p-5">
-                        <Link
-                          className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2"
-                          href="/admin/posts/edit"
-                        >
-                          Edit
-                        </Link>
-                        <Link
-                          className="bg-red-500 text-white px-4 py-2 rounded-md"
-                          href="/admin/posts/delete"
-                        >
-                          Delete
-                        </Link>
-                      </td>
-                    </tr>
+                    {postsData.map((post) => (
+                      <tr key={post._id}>
+                        <td className="p-5">{post._id}</td>
+                        <td className="p-5">{post.title}</td>
+                        <td className="p-5">
+                          <Image
+                            className="rounded-md my-3"
+                            src={post.img}
+                            width={100}
+                            height={100}
+                            alt="image post"
+                          />
+                        </td>
+                        <td className="p-5">{post.content}</td>
+                        <td className="p-5">
+                          <Link
+                            className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2"
+                            href={`/admin/posts/edit/${post._id}`}
+                          >
+                            Edit
+                          </Link>
+                          <DeleteBT id={post._id} />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -68,4 +99,4 @@ function PostsPage() {
   );
 }
 
-export default PostsPage;
+export default AdminPostsPage;

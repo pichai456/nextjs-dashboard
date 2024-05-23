@@ -18,7 +18,7 @@ function AdminPage() {
 
   const getUsers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/users-all", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users-all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ function AdminPage() {
   };
   const getPosts = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/posts-all", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}0/api/posts-all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

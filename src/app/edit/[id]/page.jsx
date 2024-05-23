@@ -21,13 +21,16 @@ function EditPage({ params }) {
 
   const getPostById = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/posts/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-cache",
+        }
+      );
       if (res.error) {
         throw Error("Failed to get posts");
       }
@@ -43,17 +46,20 @@ function EditPage({ params }) {
   };
   const putPost = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: newTitle,
-          img: newImg,
-          content: newContent,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/posts/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: newTitle,
+            img: newImg,
+            content: newContent,
+          }),
+        }
+      );
       if (res.error) {
         throw Error("Failed to get posts");
       }

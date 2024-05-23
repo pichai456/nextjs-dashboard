@@ -17,7 +17,7 @@ function UserPage() {
 
   const getUsersAll = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/users-all", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users-all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
