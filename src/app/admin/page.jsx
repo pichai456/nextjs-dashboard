@@ -37,7 +37,7 @@ function AdminPage() {
   };
   const getPosts = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}0/api/posts-all`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/posts-all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
