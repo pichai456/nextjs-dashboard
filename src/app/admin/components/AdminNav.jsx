@@ -10,18 +10,18 @@ function AdminNav({ session }) {
       <div className="container mx-auto">
         <div className="flex justify-between items-center p-7">
           <div>
-            <Link href="/">
-              <h2 className="text-3xl">Admin DashBoard</h2>
+            <Link href="/admin">
+              <h2 className="text-3xl text-white">Admin DashBoard</h2>
               {/* <Image src={Logo} width={100} height={100} alt="logo" /> */}
             </Link>
           </div>
           <ul className="flex">
             {!session ? (
               <>
-                <li className="mx-3 hover:underline">
+                <li className="mx-3  hover:shadow-2xl hover:border">
                   <Link href={"/login"}>Login</Link>
                 </li>
-                <li className="mx-3 hover:underline">
+                <li className="mx-3  hover:shadow-2xl hover:border">
                   <Link href={"/register"}>Register</Link>
                 </li>
               </>
@@ -29,7 +29,7 @@ function AdminNav({ session }) {
               <li>
                 <a
                   onClick={() => signOut()}
-                  className="bg-red-600 text-white text-lg rounded-md  my-2 py-2 px-3 hover:text-slate-300"
+                  className="bg-red-600 text-white text-lg rounded-md  my-2 py-2 px-3  hover:shadow-2xl hover:border"
                 >
                   Logout
                 </a>

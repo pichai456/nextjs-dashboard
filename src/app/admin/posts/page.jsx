@@ -48,8 +48,19 @@ function AdminPostsPage() {
           <div className="flex  mt-10">
             <SideNav />
             <div className="p-10">
-              <h3 className="text-3xl mb-3">Manage Posts</h3>
-              <p>list post form MongoDB database</p>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-3xl mb-3">Manage Posts</h3>
+                  <p>list post form MongoDB database</p>
+                </div>
+                <Link
+                  className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                  href={"/admin/posts/create"}
+                >
+                  Create New Post
+                </Link>
+              </div>
+
               <div className="shadow-lg overflow-x-auto">
                 <table className="w-full text-left rounded-md mt-3 table-fixed">
                   <thead>

@@ -62,7 +62,7 @@ function AdminPage() {
   return (
     <Container>
       <AdminNav session={session} />
-      <div className="grow">
+      <div className="grow bg-gray-100">
         <div className="container mx-auto">
           <div className="flex justify-between mt-10">
             <SideNav />
